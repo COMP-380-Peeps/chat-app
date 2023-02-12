@@ -1,4 +1,5 @@
-
+# AWS Build Status
+[![Node.js CI](https://github.com/COMP-380-Peeps/chat-app/actions/workflows/node.js.yml/badge.svg)](https://github.com/COMP-380-Peeps/chat-app/actions/workflows/node.js.yml)
 # How to set up local environment
 This might get more complicated as time goes on, but currently you need to:
 
