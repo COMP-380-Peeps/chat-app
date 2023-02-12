@@ -2,7 +2,7 @@
 # How to set up local environment
 This might get more complicated as time goes on, but currently you need to:
 
-1. Make sure you have [Node](https://nodejs.org/en/download/) installed. Make sure it is version 18+. If you have other versions of Node on your system I'd recommend installing Node Version Manager (NVM)
+1. Make sure you have [Node](https://nodejs.org/en/download/) installed. Make sure it is version 16.x. If you have other versions of Node on your system I'd recommend installing Node Version Manager (NVM)
 2. Once you have Node installed, (you might need to restart your computer), you should clone this repository. You can either install Git (terminal usage), GitHub Desktop (GUI), or use built in Git functions in your IDE (VSCode, or Jetbrains).
 3. Once the repository is cloned, open the project in your IDE, and open a terminal window to run: `npm install`. This will install all of the needed packages to run the frontend locally. Note: as we add new features we might have new dependincies, so re-running `npm install` might be necessary.
 4. From the same terminal run: `npm start`, this should start up the frontend and automatically open a browser window of our site!
