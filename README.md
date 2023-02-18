@@ -12,7 +12,7 @@ This might get more complicated as time goes on, but currently you need to:
 # Important
 Before you make any code changes, MAKE A NEW BRANCH! This is to ensure we do not overwrite code that may be important, accidentally. You will make a new, different branch for every task assigned to you, and once you are finished with the task you will submit a Pull Request (PR). 
 
-Please do not work on, or push to the master branch, and when you make a PR for your branch, please assign me to it. All of our work will be done to the staging branch before merging to master. This is so I can run your code on my computer to double check everything works, and does not conflict with any existing code.
+Please do not work on, or push to the master branch, and when you make a PR for your branch, please assign me as a reviewer. All of our work will be done to the staging branch before merging to master. This is so I can run your code on my computer to double check everything works, and does not conflict with any existing code.
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
