@@ -12,6 +12,7 @@ interface AuthProps {
 interface AuthContextType {
     currentUser: User | null;
     signInWithGoogle: () => Promise<void>;
+    handleSignOut: () => Promise<void>;
     isWhitelisted: boolean;
 }
 
@@ -22,10 +23,6 @@ export function useAuth() {
     }
     return authContext;
 }
-
-export const handleSignOut = async () => {
-    await signOut(auth);
-};
 
 export const AuthProvider = ({ children }: AuthProps) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -53,10 +50,15 @@ export const AuthProvider = ({ children }: AuthProps) => {
         await signInWithPopup(auth, googleAuthProvider);
     };
 
+    const handleSignOut = async () => {
+        await signOut(auth);
+    };
+
     const value: AuthContextType = {
         currentUser,
+        isWhitelisted,
         signInWithGoogle,
-        isWhitelisted
+        handleSignOut,
     };
 
     return (
