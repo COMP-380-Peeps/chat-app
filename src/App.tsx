@@ -1,9 +1,9 @@
 import React from 'react';
-import { AuthProvider, useAuth, handleSignOut } from './components/Auth/AuthContext';
+import { AuthProvider, useAuth } from './components/Auth/AuthContext';
 import ChatBox from "./components/ChatBox/ChatBox";
 
 const App = () => {
-    const { currentUser, signInWithGoogle, isWhitelisted } = useAuth();
+    const { currentUser, signInWithGoogle, handleSignOut, isWhitelisted } = useAuth();
 
     return (
         <div>
