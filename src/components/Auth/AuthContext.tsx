@@ -1,7 +1,8 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {auth, googleAuthProvider, db} from '../Firebase/Firebase';
 import {User, signInWithPopup, signOut} from 'firebase/auth';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, setDoc, doc, getDoc, serverTimestamp } from 'firebase/firestore';
+import firebase from "firebase/compat";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -14,6 +15,30 @@ interface AuthContextType {
     signInWithGoogle: () => Promise<void>;
     handleSignOut: () => Promise<void>;
     isWhitelisted: boolean;
+}
+
+const userExists = (user: User) => {
+    const userRef = doc(db, 'users', user.uid);
+    getDoc(userRef)
+        .then((docSnapshot)=> {
+            if (docSnapshot.exists()) {
+                console.log("User exists already");
+            } else {
+                setDoc(userRef, {
+                    uid: user.uid,
+                    display_name: user.displayName,
+                    email: user.email,
+                    user_name: "",
+                    timestamp: serverTimestamp(),
+                })
+                    .then(()=> {
+                        console.log("New user added");
+                    })
+                    .catch((error) => {
+                        console.error("Error creating user doc: ", error )
+                    })
+            }
+        })
 }
 
 export function useAuth() {
@@ -40,9 +65,11 @@ export const AuthProvider = ({ children }: AuthProps) => {
                     const isWhitelisted = querySnapshot.docs.some((doc) => doc.data().email === user.email);
                     setIsWhitelisted(isWhitelisted);
                 });
+                userExists(user);
             } else {
                 setIsWhitelisted(false);
             }
+            if (isWhitelisted) {}
         });
     }, []);
 
