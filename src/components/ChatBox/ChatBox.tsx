@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useAuth} from "../Auth/AuthContext";
-import {getFirestore, collectionGroup, where, orderBy, query, getDocs, collection, getDoc, doc} from "firebase/firestore";
+import {where, onSnapshot, query, getDocs, collection} from "firebase/firestore";
 import {db} from "../Firebase/Firebase";
-import firebase from "firebase/compat";
-
+interface Message {
+    id: string;
+    content: string;
+    created_at: number;
+}
 // I'm thinking we use react-router-dom to get the serverId from useParams(), but feel free to think of other ideas
 const serverId = "server_id_1";
 
@@ -12,31 +15,32 @@ const ChatBox = () => {
     const [messages, setMessages] = useState<any[]>([]);
     useEffect(() => {
         if (currentUser && isWhitelisted) {
-            const conversationsRef = collection(db, "conversations");
-            const conversationsQuery = query(conversationsRef, where("server_id", "==", serverId));
-
-            getDocs(conversationsQuery)
-                .then(async (querySnapshot) => {
-                    const conversationsData = querySnapshot.docs.map((doc) => doc.data());
-                    const messagesArrays = conversationsData.map((conversationData) => conversationData.messages);
-                    const flatMessagesArray = messagesArrays.reduce((acc, val) => acc.concat(val), []);
-                    const messagesRef = collection(db, "server_messages");
-                    const messagesData = [];
-
-                    for (const id of flatMessagesArray) {
-                        const docRef = doc(messagesRef, id);
-                        const docSnapshot = await getDoc(docRef);
-                        if (docSnapshot.exists()) {
-                            messagesData.push({
-                                id: docSnapshot.id,
-                                created_at: docSnapshot.data().created_at,
-                                ...docSnapshot.data()});
-                        }
+            const serverRef = collection(db, "servers");
+            const serverQuery = query(serverRef, where("__name__", "==", serverId));
+            // console.log(serverRef, serverQuery)
+            getDocs(serverQuery)
+                .then((serverSnapshot) => {
+                    if (serverSnapshot.empty) {
+                        console.log(`Server ${serverId} not found`);
+                        return;
                     }
-                    setMessages(messagesData.sort((a,b) => a.created_at - b.created_at));
+                    const serverDoc = serverSnapshot.docs[0];
+                    const messagesIds = serverDoc.data().messages;
+
+                    const messagesRef = collection(db, "server_messages");
+                    const messagesQuery = query(messagesRef, where("__name__", "in", messagesIds));
+
+                    const unsubscribeMessages = onSnapshot(messagesQuery, (querySnapshot) => {
+                        const messagesData = querySnapshot.docs.map((doc) => ({
+                            id: doc.id,
+                            ...doc.data(),
+                        })) as Message[];
+                        setMessages(messagesData.sort((a, b) => a.created_at - b.created_at));
+                    })
+                    return () => unsubscribeMessages();
                 })
                 .catch((error) => {
-                    console.error("Error getting messages: ", error);
+                    console.error("Error getting server: ", error);
                 });
         }
     }, [serverId, currentUser, db])
