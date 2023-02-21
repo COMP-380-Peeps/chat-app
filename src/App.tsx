@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { AuthProvider, useAuth } from './components/Auth/AuthContext';
+import ChatBox from "./components/ChatBox/ChatBox";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const { currentUser, signInWithGoogle, handleSignOut, isWhitelisted } = useAuth();
 
-export default App;
+    return (
+        <div>
+            {currentUser && isWhitelisted ? (
+                <>
+                    <p>Welcome, {currentUser.displayName}!</p>
+                    <ChatBox></ChatBox>
+                    <button onClick={handleSignOut}>Sign Out</button>
+                </>
+            ) : (
+                <button onClick={signInWithGoogle}>Sign in with Google</button>
+            )}
+        </div>
+    );
+};
+
+export default () => (
+    <AuthProvider>
+        <App/>
+    </AuthProvider>
+);
