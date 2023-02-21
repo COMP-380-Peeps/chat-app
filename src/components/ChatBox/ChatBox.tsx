@@ -43,7 +43,7 @@ const ChatBox = () => {
                     console.error("Error getting server: ", error);
                 });
         }
-    }, [serverId, currentUser, db])
+    }, [currentUser, isWhitelisted])
 
     if (currentUser && isWhitelisted) {
         return (

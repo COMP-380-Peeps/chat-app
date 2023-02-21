@@ -2,7 +2,6 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 import {auth, googleAuthProvider, db} from '../Firebase/Firebase';
 import {User, signInWithPopup, signOut} from 'firebase/auth';
 import { collection, getDocs, setDoc, doc, getDoc, serverTimestamp } from 'firebase/firestore';
-import firebase from "firebase/compat";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -71,7 +70,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
             }
             if (isWhitelisted) {}
         });
-    }, []);
+    }, [isWhitelisted]);
 
     const signInWithGoogle = async () => {
         await signInWithPopup(auth, googleAuthProvider);
