@@ -9,6 +9,10 @@ This might get more complicated as time goes on, but currently you need to:
 4. From the same terminal run: `npm start`, this should start up the frontend and automatically open a browser window of our site!
 5. Success!
 
+# Notes
+1. By default the frontend loads on `localhost:3000`
+2. When running locally, firebase will set up an emulator run firestore so that it doesn't interfere with our production data. You can view the UI on `localhost:4000`
+
 # Important
 Before you make any code changes, MAKE A NEW BRANCH! This is to ensure we do not overwrite code that may be important, accidentally. You will make a new, different branch for every task assigned to you, and once you are finished with the task you will submit a Pull Request (PR). 
 
