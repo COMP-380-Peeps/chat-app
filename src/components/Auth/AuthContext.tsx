@@ -61,16 +61,18 @@ export const AuthProvider = ({ children }: AuthProps) => {
             if (user) {
                 const whitelistRef = collection(db,'whitelisted_users');
                 getDocs(whitelistRef).then((querySnapshot) => {
-                    const isWhitelisted = querySnapshot.docs.some((doc) => doc.data().email === user.email);
+                    const test = querySnapshot.docs
+                    console.log(test)
+                    const isWhitelisted = querySnapshot.docs.some((doc) => doc.id === user.email);
                     setIsWhitelisted(isWhitelisted);
+                    console.log(isWhitelisted)
                 });
                 userExists(user);
             } else {
                 setIsWhitelisted(false);
             }
-            if (isWhitelisted) {}
         });
-    }, [isWhitelisted]);
+    }, []);
 
     const signInWithGoogle = async () => {
         await signInWithPopup(auth, googleAuthProvider);

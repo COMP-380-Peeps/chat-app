@@ -13,11 +13,12 @@ const serverId = "server_id_1";
 const ChatBox = () => {
     const { currentUser, isWhitelisted } = useAuth();
     const [messages, setMessages] = useState<any[]>([]);
+    console.log(currentUser, isWhitelisted)
     useEffect(() => {
         if (currentUser && isWhitelisted) {
             const serverRef = collection(db, "servers");
             const serverQuery = query(serverRef, where("__name__", "==", serverId));
-            // console.log(serverRef, serverQuery)
+            console.log(serverRef, serverQuery)
             getDocs(serverQuery)
                 .then((serverSnapshot) => {
                     if (serverSnapshot.empty) {
